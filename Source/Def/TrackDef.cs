@@ -44,7 +44,7 @@ namespace MusicExpanded
             TrackDef track = new TrackDef();
             // Def
             track.defName = song.defName;
-            track.label = song.label;
+            track.label = song.defName.Replace("_", " ");
             track.description = song.description;
             track.generated = true;
             // SongDef

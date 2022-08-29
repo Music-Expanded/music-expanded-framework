@@ -73,10 +73,12 @@ namespace MusicExpanded
         {
             ThemeDef vanillaTheme = DefDatabase<ThemeDef>.GetNamedSilentFail("ME_Vanilla");
             if (vanillaTheme != null) return;
-            Log.Message("Generating new vanillaTheme");
 
             vanillaTheme = new ThemeDef();
+            vanillaTheme.label = "ME_Vanilla_Label".Translate();
+            vanillaTheme.description = "ME_Vanilla_Description".Translate();
             vanillaTheme.defName = "ME_Vanilla";
+            vanillaTheme.tracks = new List<TrackDef>();
             IEnumerable<SongDef> songs = DefDatabase<SongDef>.AllDefsListForReading.Where((SongDef track) =>
             {
                 return DefDatabase<TrackDef>.GetNamedSilentFail(track.defName) == null;
@@ -86,16 +88,7 @@ namespace MusicExpanded
                 TrackDef track = TrackDef.FromSong(song);
                 track.defName = "ME_Vanilla_" + song.defName;
                 giveShortHash.Invoke(null, new object[] { track, typeof(TrackDef) });
-                Log.Message("Adding " + track.shortHash + " From " + song.shortHash);
-                try
-                {
-                    DefDatabase<TrackDef>.Add(track);
-                    vanillaTheme.tracks.Add(track);
-                }
-                catch
-                {
-                    Log.Warning("Failed to add " + track);
-                }
+                vanillaTheme.tracks.Add(track);
             }
             giveShortHash.Invoke(null, new object[] { vanillaTheme, typeof(ThemeDef) });
             DefDatabase<ThemeDef>.Add(vanillaTheme);

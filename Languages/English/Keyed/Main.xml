@@ -7,4 +7,7 @@
   <ME_ShowNowPlaying>Show Now Playing</ME_ShowNowPlaying>
   <ME_ShowNowPlayingDescription>When on, a message will appear with the title of the currently selected track.</ME_ShowNowPlayingDescription>
   <ME_NowPlaying>Now Playing: {0}</ME_NowPlaying>
+  <!-- Vanilla Theme -->
+  <ME_Vanilla_Label>Music Expanded: Vanilla</ME_Vanilla_Label>
+  <ME_Vanilla_Description>All vanilla SongDefs implemented with the features of MusicExpanded!</ME_Vanilla_Description>
 </LanguageData>

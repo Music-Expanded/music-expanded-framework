@@ -15,7 +15,7 @@ jobs:
     - run: dotnet build
     - uses: actions/upload-artifact@v2
       with:
-        name: MusicExpandedCore
+        name: MusicExpandedFramework
         path: |
           About
           Assemblies

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -24,6 +25,7 @@ namespace MusicExpanded
             });
         }
         private static Dictionary<string, List<SubSoundDef>> vanillaSubSounds = new Dictionary<string, List<SubSoundDef>>();
+        private static MethodInfo giveShortHash = AccessTools.Method(typeof(Verse.ShortHashGiver), "GiveShortHash");
         public static void Select(ThemeDef theme)
         {
             Core.settings.selectedTheme = theme.defName;
@@ -53,6 +55,7 @@ namespace MusicExpanded
         }
         public static void ResolveSounds(ThemeDef theme = null)
         {
+            GenerateVanillaTheme();
             if (theme == null) theme = ActiveTheme;
             List<Verse.SoundDef> vanillaSoundDefs = DefDatabase<Verse.SoundDef>.AllDefsListForReading;
             ResetSounds(vanillaSoundDefs);
@@ -65,6 +68,31 @@ namespace MusicExpanded
                 vanillaSound.subSounds = expandedSound.subSounds;
                 vanillaSound.ResolveReferences();
             }
+        }
+        private static void GenerateVanillaTheme()
+        {
+            ThemeDef vanillaTheme = DefDatabase<ThemeDef>.GetNamedSilentFail("ME_Vanilla");
+            if (vanillaTheme != null) return;
+
+            vanillaTheme = new ThemeDef();
+            vanillaTheme.label = "ME_Vanilla_Label".Translate();
+            vanillaTheme.description = "ME_Vanilla_Description".Translate();
+            vanillaTheme.defName = "ME_Vanilla";
+            vanillaTheme.tracks = new List<TrackDef>();
+            IEnumerable<SongDef> songs = DefDatabase<SongDef>.AllDefsListForReading.Where((SongDef track) =>
+            {
+                return DefDatabase<TrackDef>.GetNamedSilentFail(track.defName) == null;
+            });
+            foreach (SongDef song in songs)
+            {
+                TrackDef track = TrackDef.FromSong(song);
+                track.defName = "ME_Vanilla_" + song.defName;
+                giveShortHash.Invoke(null, new object[] { track, typeof(TrackDef) });
+                vanillaTheme.tracks.Add(track);
+            }
+            giveShortHash.Invoke(null, new object[] { vanillaTheme, typeof(ThemeDef) });
+            DefDatabase<ThemeDef>.Add(vanillaTheme);
+
         }
         private static void ResetSounds(List<Verse.SoundDef> vanillaSoundDefs)
         {

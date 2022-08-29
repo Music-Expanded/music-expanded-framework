@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Patch>
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Vanilla Events Expanded</li>
+		</mods>
+		<match Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations> 
+			 <li Class="PatchOperationAddModExtension"> 
+				<xpath>/Defs/IncidentDef[defName="SpaceBattle"]</xpath>
+				<value>
+					<li Class="MusicExpanded.ModExtension.PlayCue">
+						<cue>SpaceBattle</cue>
+					</li>
+				</value>
+			 </li> 
+		</operations>
+		</match>
+	</Operation>
+	
+</Patch>
+

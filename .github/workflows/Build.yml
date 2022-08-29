@@ -1,0 +1,27 @@
+﻿name: Build
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v2
+    - run: dotnet build
+    - uses: actions/upload-artifact@v2
+      with:
+        name: MusicExpandedCore
+        path: |
+          About
+          Assemblies
+          Defs
+          Patches
+          Textures
+          Sounds
+          News
+          *.md

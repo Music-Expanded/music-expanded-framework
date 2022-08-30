@@ -115,4 +115,57 @@ Then, we can add that to the list of tracks in the theme.
 - [Vanilla Event Patches](/Patches/VanillaEvents.xml)
     - Here, we patch vanilla events to call specific cues.
 - [VEF Events](/Patches/VEFEvents.xml)
-    - Here, we conditionally patch a Vanilla Events Expanded event, if it's there.
+    - Here, we conditionally patch a Vanilla Events Expanded event.
+
+### Step 1:
+Let's say you have an arbitrary `IncidentDef`. Defined in your mod.
+```xml
+<IncidentDef>
+    <defName>ExampleMod_Incident</defName>
+    <label>something bad</label>
+    <category>ThreatBig</category>
+    <targetTags>
+        <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>ExampleMod.Incidents.Whatever</workerClass>
+    <letterLabel>Something bad</letterLabel>
+    <letterText>Oh no</letterText>
+    <letterDef>ThreatBig</letterDef>
+    <baseChance>6.5</baseChance>
+    <minThreatPoints>500</minThreatPoints>
+    <pointsScaleable>true</pointsScaleable>
+</IncidentDef>
+```
+What we'd want to add to that mod is a `ModExtension` that we have defined. More info on this can be found in the [readme](/README.md). It looks like this when implemented
+```xml
+<modExtensions>
+    <li Class="MusicExpanded.ModExtension.PlayCue">
+        <playBattleTrack>true</playBattleTrack>
+    </li>
+</modExtensions>
+```
+
+
+ You probably have more than a few options, but in my opinion, you should conditionally add the mod extension if our mod is loaded, rather than explicitly name this mod as a dependency for yours. (Assuming your mod does more than add a theme, at least.)
+
+ For example, take a  look at this patch. If your mod finds this mod, then it'll patch the `ExampleMod_Incident` with our mod extension.
+```xml
+<Patch>
+    <Operation Class="PatchOperationFindMod">
+        <mods><li>Music Expanded Framework</li></mods>
+        <match Class="PatchOperationSequence">
+            <success>Always</success>
+            <operations> 
+                <li Class="PatchOperationAddModExtension"> 
+                    <xpath>/Defs/IncidentDef[defName="ExampleMod_Incident"]</xpath>
+                    <value>
+                        <li Class="MusicExpanded.ModExtension.PlayCue">
+                            <playBattleTrack>true</playBattleTrack>
+                        </li>
+                    </value>
+                </li> 
+            </operations>
+        </match>
+    </Operation>
+</Patch>
+```

@@ -27,6 +27,14 @@ This mod overhauls how music functions in RimWorld! It ensures there's always a 
 | - | - | - | -
 | `List<SoundDef>` | `replaces` | | Used to denote that this specific SoundDef replaces one or more vanilla SoundDefs.
 
+# ModExtensions
+<!-- It could be argued most of those defs could've been modextensions... -->
+## MusicExpanded.ModExtension.PlayCue
+
+| Type | Field | Default | Description of Use
+| - | - | - | -
+| `bool` | playBattleTrack | `false` | If `true`, the event this extension is on will dynamically play a battle cue based on points. If your event doesn't use points, it's likely easier to simply use the `cue` field.
+| `Cue` | `cue` | `Cue.None` | When set, the event this extension is on will play a track with that `Cue` set on it, if one exists.
 
 # Logic
 

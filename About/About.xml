@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ModMetaData>
     <name>Music Expanded Framework</name>
-    <description>TODO</description>
-    <author>TODO</author>
+    <description><![CDATA[This This mod overhauls how music functions in RimWorld! It ensures there's always a track playing and introduces cues for specific tracks to play.]]>
+    </description>
+    <author>JME, Caaz, Odeum, Pphhyy the great, Zylle</author>
     <packageId>musicexpanded.framework</packageId>
     <supportedVersions>
         <li>1.3</li>

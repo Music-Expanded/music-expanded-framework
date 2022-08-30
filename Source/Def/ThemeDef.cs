@@ -15,13 +15,13 @@ namespace MusicExpanded
         public List<TrackDef> tracks;
         public List<SoundDef> sounds = new List<SoundDef>();
         public string iconPath;
-        public static IEnumerable<TrackDef> TracksWithNamedColonist => ActiveTheme.tracks.Where(track => track.cue == Cue.StartWithNamedColonist);
+        public static IEnumerable<TrackDef> TracksWithNamedColonist => ActiveTheme.tracks.Where(track => track.cue == Cue.HasColonistNamed);
         public static TrackDef TrackByDefName(string defName) => ActiveTheme.tracks.Find(track => track.defName == defName);
-        public static IEnumerable<TrackDef> TracksByCue(Cue cue, string name = null)
+        public static IEnumerable<TrackDef> TracksByCue(Cue cue, string data = null)
         {
             return ActiveTheme.tracks.Where(track =>
             {
-                return track.cue == cue && (!name.NullOrEmpty() || name == track.namedPawn);
+                return track.cue == cue && (!data.NullOrEmpty() || data == track.cueData);
             });
         }
         private static Dictionary<string, List<SubSoundDef>> vanillaSubSounds = new Dictionary<string, List<SubSoundDef>>();

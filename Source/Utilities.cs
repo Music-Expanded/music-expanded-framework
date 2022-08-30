@@ -36,5 +36,9 @@ namespace MusicExpanded
                 return Cue.BattleMedium;
             return Cue.BattleSmall;
         }
+        public static bool NameMatches(Pawn pawn, string name)
+        {
+            return pawn.Name.ToStringFull.ToLower().Contains(name.ToLower());
+        }
     }
 }

@@ -11,10 +11,6 @@ namespace MusicExpanded.Patches
         [HarmonyPatch(typeof(RimWorld.Scenario), "PostGameStart")]
         class PostGameStart
         {
-            static bool NameMatches(Pawn pawn, string name)
-            {
-                return pawn.Name.ToStringFull.ToLower().Contains(name.ToLower());
-            }
             static void Postfix(RimWorld.Scenario __instance)
             {
                 Map map = Find.AnyPlayerHomeMap ?? Find.CurrentMap;
@@ -28,7 +24,7 @@ namespace MusicExpanded.Patches
                 {
                     IEnumerable<TrackDef> tracks = ThemeDef.TracksWithNamedColonist;
                     foreach (Pawn pawn in pawns)
-                        if (Utilities.PlayTrack(tracks.Where(track => NameMatches(pawn, track.namedPawn))))
+                        if (Utilities.PlayTrack(tracks.Where(track => Utilities.NameMatches(pawn, track.cueData))))
                             return;
                 }
             }

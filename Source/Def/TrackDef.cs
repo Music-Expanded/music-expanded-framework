@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Verse;
 
@@ -10,15 +11,18 @@ namespace MusicExpanded
     {
         public bool vanillaLogic = false;
         public Cue cue = Cue.None;
-        public string namedPawn;
+        public string cueData;
         public static MethodInfo vanillaAppropriateNow = AccessTools.Method(typeof(RimWorld.MusicManagerPlay), "AppropriateNow");
         public bool IsBattleTrack => (cue <= Cue.BattleLegendary && cue >= Cue.BattleSmall);
         public bool AppropriateNow(MusicManagerPlay manager, SongDef lastPlayed)
         {
             if (
                 lastPlayed == this
-                || cue != Cue.None
+                || (cue != Cue.None && cue != Cue.HasColonistNamed)
             )
+                return false;
+
+            if (cue == Cue.HasColonistNamed && !Find.CurrentMap.PlayerPawnsForStoryteller.Where((pawn) => Utilities.NameMatches(pawn, cueData)).Any())
                 return false;
 
             if (vanillaLogic)

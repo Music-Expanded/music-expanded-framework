@@ -7,15 +7,10 @@ namespace MusicExpanded
         BattleMedium,
         BattleLarge,
         BattleLegendary,
+        LoneColonist,
+        HasColonistNamed,
         MainMenu,
         Credits,
-        ManInBlack,
-        LoneColonist,
-        StartWithNamedColonist,
-        Betrayal,
-        SpaceBattle,
-        StartInGoldForest,
-        AnimalInsanity,
-        ExtremeDesertBattle,
+        Custom,
     }
 }

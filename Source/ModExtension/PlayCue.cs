@@ -6,5 +6,6 @@ namespace MusicExpanded.ModExtension
     {
         public bool playBattleTrack = false;
         public Cue cue = Cue.None;
+        public string cueData;
     }
 }

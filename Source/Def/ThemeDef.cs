@@ -79,6 +79,7 @@ namespace MusicExpanded
             vanillaTheme.description = "ME_Vanilla_Description".Translate();
             vanillaTheme.defName = "ME_Vanilla";
             vanillaTheme.tracks = new List<TrackDef>();
+            vanillaTheme.iconPath = "UI/HeroArt/RimWorldLogo";
             IEnumerable<SongDef> songs = DefDatabase<SongDef>.AllDefsListForReading.Where((SongDef track) =>
             {
                 return DefDatabase<TrackDef>.GetNamedSilentFail(track.defName) == null;

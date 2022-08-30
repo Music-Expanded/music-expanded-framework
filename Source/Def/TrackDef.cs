@@ -8,24 +8,11 @@ namespace MusicExpanded
 {
     public class TrackDef : SongDef
     {
-        public List<BiomeDef> allowedBiomes;
-        public bool playDuringBattles = false;
-        public bool playOnMainMenu = false;
-        public bool playOnCredits = false;
         public bool vanillaLogic = false;
-        public string autoPrefix;
         public Cue cue = Cue.None;
         public string namedPawn;
         public static MethodInfo vanillaAppropriateNow = AccessTools.Method(typeof(RimWorld.MusicManagerPlay), "AppropriateNow");
         public bool IsBattleTrack => (cue <= Cue.BattleLegendary && cue >= Cue.BattleSmall);
-
-
-        public override void PostLoad()
-        {
-            base.PostLoad();
-            if (autoPrefix != null)
-                defName = autoPrefix + defName;
-        }
         public bool AppropriateNow(MusicManagerPlay manager, SongDef lastPlayed)
         {
             if (

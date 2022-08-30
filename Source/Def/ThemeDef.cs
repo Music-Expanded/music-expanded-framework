@@ -19,10 +19,18 @@ namespace MusicExpanded
         public static TrackDef TrackByDefName(string defName) => ActiveTheme.tracks.Find(track => track.defName == defName);
         public static IEnumerable<TrackDef> TracksByCue(Cue cue, string data = null)
         {
-            return ActiveTheme.tracks.Where(track =>
+            IEnumerable<TrackDef> tracks = ActiveTheme.tracks.Where(track =>
             {
-                return track.cue == cue && (!data.NullOrEmpty() || data == track.cueData);
+                // Something right here isn't fucking working.
+                if (!data.NullOrEmpty() && track.cueData != data) return false;
+                return track.cue == cue;
             });
+            Log.Message("Returning " + tracks.Count() + " tracks");
+            foreach (TrackDef track in tracks)
+            {
+                Log.Message(track.label);
+            }
+            return tracks;
         }
         private static Dictionary<string, List<SubSoundDef>> vanillaSubSounds = new Dictionary<string, List<SubSoundDef>>();
         private static MethodInfo giveShortHash = AccessTools.Method(typeof(Verse.ShortHashGiver), "GiveShortHash");

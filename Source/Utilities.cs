@@ -7,12 +7,12 @@ namespace MusicExpanded
 {
     public static class Utilities
     {
-        public static TrackDef GetTrack(Cue cue, string name = null)
+        public static TrackDef GetTrack(Cue cue, string cueData = null)
         {
-            ThemeDef.TracksByCue(cue, name).TryRandomElementByWeight((TrackDef s) => s.commonality, out TrackDef track);
+            ThemeDef.TracksByCue(cue, cueData).TryRandomElementByWeight((TrackDef s) => s.commonality, out TrackDef track);
             return track;
         }
-        public static bool PlayTrack(Cue cue, string name = null) => PlayTrack(ThemeDef.TracksByCue(cue, name));
+        public static bool PlayTrack(Cue cue, string cueData = null) => PlayTrack(ThemeDef.TracksByCue(cue, cueData));
         public static bool PlayTrack(IEnumerable<TrackDef> tracks)
         {
             if (!tracks.Any())

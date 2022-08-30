@@ -18,7 +18,7 @@ namespace MusicExpanded
         {
             if (
                 lastPlayed == this
-                || (cue != Cue.HasColonistNamed || cue != Cue.None)
+                || (cue != Cue.None && cue != Cue.HasColonistNamed)
             )
                 return false;
 

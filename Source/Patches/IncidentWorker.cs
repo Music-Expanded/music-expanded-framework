@@ -3,6 +3,7 @@ using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using System.Linq;
+using Verse;
 
 namespace MusicExpanded.Patches
 {
@@ -24,7 +25,10 @@ namespace MusicExpanded.Patches
             if (playCue.playBattleTrack)
                 Utilities.PlayTrack(Utilities.BattleCue(parms.points));
             else
-                Utilities.PlayTrack(playCue.cue);
+            {
+                Log.Message("Playing track " + playCue.cue + ", with data " + playCue.cueData);
+                Utilities.PlayTrack(playCue.cue, playCue.cueData);
+            }
         }
     }
 }

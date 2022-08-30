@@ -9,15 +9,8 @@ namespace MusicExpanded
         BattleLegendary,
         LoneColonist,
         HasColonistNamed,
-        Custom,
-        // Below this we can remove stuff.
         MainMenu,
         Credits,
-        ManInBlack,
-        Betrayal,
-        SpaceBattle,
-        StartInGoldForest,
-        AnimalInsanity,
-        ExtremeDesertBattle,
+        Custom,
     }
 }

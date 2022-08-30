@@ -9,6 +9,7 @@
     </supportedVersions>
     <loadAfter>
         <li>brrainz.harmony</li>
+        <li>VanillaExpanded.VEE</li>
     </loadAfter>
     <modDependencies>        
         <li>

@@ -106,3 +106,13 @@ Music Expanded adds the feature to play specific tracks during specific situatio
 </MusicExpanded.TrackDef>
 ```
 Then, we can add that to the list of tracks in the theme.
+
+
+
+## How do I make my mod's event call MusicExpanded cues?
+
+### Examples
+- [Vanilla Event Patches](/Patches/VanillaEvents.xml)
+    - Here, we patch vanilla events to call specific cues.
+- [VEF Events](/Patches/VEFEvents.xml)
+    - Here, we conditionally patch a Vanilla Events Expanded event, if it's there.

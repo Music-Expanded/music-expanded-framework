@@ -8,10 +8,6 @@ namespace MusicExpanded
 {
     public class TrackDef : SongDef
     {
-        public List<BiomeDef> allowedBiomes;
-        public bool playDuringBattles = false;
-        public bool playOnMainMenu = false;
-        public bool playOnCredits = false;
         public bool vanillaLogic = false;
         public string autoPrefix;
         public Cue cue = Cue.None;

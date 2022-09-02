@@ -63,7 +63,7 @@ namespace MusicExpanded
             ResetSounds(vanillaSoundDefs);
             foreach (Verse.SoundDef vanillaSound in vanillaSoundDefs)
             {
-                SoundDef expandedSound = theme.sounds.Find(sound => sound.replaces.Contains(vanillaSound));
+                SoundDef expandedSound = theme.sounds.Find(sound => sound.GetModExtension<ModExtension.ReplacesSounds>().sounds.Contains(vanillaSound));
                 if (expandedSound == null) continue;
                 vanillaSubSounds.SetOrAdd(vanillaSound.defName, vanillaSound.subSounds);
                 vanillaSound.subSounds = expandedSound.subSounds;

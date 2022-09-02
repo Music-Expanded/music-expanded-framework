@@ -46,7 +46,7 @@ namespace MusicExpanded.Patches
 
                 if (tracks == null || !tracks.Any())
                 {
-                    tracks = ThemeDef.ActiveTheme.tracks.Where(track => track.AppropriateNow(__instance, lastTrack));
+                    tracks = ThemeDef.ActiveTheme.tracks.Where(track => track.AppropriateNow(lastTrack));
                 }
                 if (!tracks.Any())
                 {

@@ -14,19 +14,18 @@ namespace MusicExpanded
         public string cueData;
         public static MethodInfo vanillaAppropriateNow = AccessTools.Method(typeof(RimWorld.MusicManagerPlay), "AppropriateNow");
         public bool IsBattleTrack => (cue <= Cue.BattleLegendary && cue >= Cue.BattleSmall);
-        public bool AppropriateNow(MusicManagerPlay manager, SongDef lastPlayed)
+        public List<BiomeDef> allowedBiomes;
+        public bool AppropriateNow(SongDef lastPlayed = null, Cue cueMatch = Cue.None)
         {
             if (
-                lastPlayed == this
-                || (cue != Cue.None && cue != Cue.HasColonistNamed)
+                (cue == Cue.HasColonistNamed && !Find.CurrentMap.PlayerPawnsForStoryteller.Where((pawn) => Utilities.NameMatches(pawn, cueData)).Any())
+                || (cue != cueMatch || (lastPlayed != null && lastPlayed == this))
+                || (allowedBiomes != null && !allowedBiomes.Contains(Find.CurrentMap.Biome))
             )
                 return false;
 
-            if (cue == Cue.HasColonistNamed && !Find.CurrentMap.PlayerPawnsForStoryteller.Where((pawn) => Utilities.NameMatches(pawn, cueData)).Any())
-                return false;
-
             if (vanillaLogic)
-                return (bool)vanillaAppropriateNow.Invoke(manager, new SongDef[] { this as SongDef });
+                return (bool)vanillaAppropriateNow.Invoke(Find.MusicManagerPlay, new SongDef[] { this as SongDef });
 
             return true;
         }

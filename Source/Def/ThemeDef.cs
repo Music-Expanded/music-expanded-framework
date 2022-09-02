@@ -21,9 +21,8 @@ namespace MusicExpanded
         {
             IEnumerable<TrackDef> tracks = ActiveTheme.tracks.Where(track =>
             {
-                // Something right here isn't fucking working.
                 if (!data.NullOrEmpty() && track.cueData != data) return false;
-                return track.cue == cue;
+                return track.AppropriateNow(null, cue);
             });
             Log.Message("Returning " + tracks.Count() + " tracks");
             foreach (TrackDef track in tracks)

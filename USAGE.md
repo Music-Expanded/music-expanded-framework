@@ -54,9 +54,9 @@ That's the bare minimum though. Let's get fancy. Want to replace the starting gu
 `ExampleMod/Defs/Sounds.xml`
 ```xml
 <Defs>
-    <MusicExpanded.SoundDef>
+    <SoundDef>
         <defName>ExampleMod_StartSting</defName>
-        <replaces><li>GameStartSting</li></replaces>
+        <modExtensions><li Class="MusicExpanded.ModExtension.ReplacesSounds"><sounds><li>GameStartSting</li></sounds></li></modExtensions>
         <subSounds>
             <li>
                 <onCamera>True</onCamera>      
@@ -68,10 +68,10 @@ That's the bare minimum though. Let's get fancy. Want to replace the starting gu
                 <volumeRange>100~100</volumeRange>
             </li>
         </subSounds>
-    </MusicExpanded.SoundDef>
+    </SoundDef>
 </Defs>
 ```
-The `replaces` field is what drives this feature, this single SoundDef can replace multiple vanilla sounds if you really wanted. Anyway, we need to add it to the Themedef as well. Back in that file, let's update it to the following:
+The `MusicExpanded.ModExtension.ReplacesSounds` field is what drives this feature, this single SoundDef can replace multiple vanilla sounds if you really wanted. Anyway, we need to add it to the Themedef as well. Back in that file, let's update it to the following:
 
 `ExampleMod/Defs/Theme.xml`
 ```xml
@@ -101,8 +101,8 @@ Music Expanded adds the feature to play specific tracks during specific situatio
     <label>Caaz - Daniel's Song</label>
     <defName>ExampleMod_DanielsSong</defName>
     <clipPath>ExampleMod/Daniel's Song.mp3</clipPath>
-    <cue>StartWithNamedColonist</cue>
-    <namedPawn>Daniel</namedPawn>
+    <cue>HasNamedColonist</cue>
+    <cueData>Daniel</cueData>
 </MusicExpanded.TrackDef>
 ```
 Then, we can add that to the list of tracks in the theme.

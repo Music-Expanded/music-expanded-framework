@@ -24,11 +24,6 @@ namespace MusicExpanded
                 if (!data.NullOrEmpty() && track.cueData != data) return false;
                 return track.AppropriateNow(null, cue);
             });
-            Log.Message("Returning " + tracks.Count() + " tracks");
-            foreach (TrackDef track in tracks)
-            {
-                Log.Message(track.label);
-            }
             return tracks;
         }
         private static Dictionary<string, List<SubSoundDef>> vanillaSubSounds = new Dictionary<string, List<SubSoundDef>>();

@@ -25,10 +25,7 @@ namespace MusicExpanded.Patches
             if (playCue.playBattleTrack)
                 Utilities.PlayTrack(Utilities.BattleCue(parms.points));
             else
-            {
-                Log.Message("Playing track " + playCue.cue + ", with data " + playCue.cueData);
                 Utilities.PlayTrack(playCue.cue, playCue.cueData);
-            }
         }
     }
 }

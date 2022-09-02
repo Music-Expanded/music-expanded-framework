@@ -2,7 +2,6 @@ using HarmonyLib;
 using Verse;
 using System.Linq;
 using System.Collections.Generic;
-using System;
 
 namespace MusicExpanded.Patches
 {

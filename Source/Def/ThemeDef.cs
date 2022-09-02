@@ -71,7 +71,6 @@ namespace MusicExpanded
             {
                 SoundDef expandedSound = theme.sounds.Find(sound => sound.replaces.Contains(vanillaSound));
                 if (expandedSound == null) continue;
-                Log.Message("Replacing " + vanillaSound.defName);
                 vanillaSubSounds.SetOrAdd(vanillaSound.defName, vanillaSound.subSounds);
                 vanillaSound.subSounds = expandedSound.subSounds;
                 vanillaSound.ResolveReferences();

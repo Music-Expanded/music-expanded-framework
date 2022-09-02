@@ -1,4 +1,3 @@
-
 using Verse;
 
 namespace MusicExpanded

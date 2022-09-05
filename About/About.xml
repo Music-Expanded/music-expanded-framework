@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ModMetaData>
     <name>Music Expanded Framework</name>
-    <description><![CDATA[This This mod overhauls how music functions in RimWorld! It ensures there's always a track playing and introduces cues for specific tracks to play.]]>
+    <description><![CDATA[This mod overhauls how music functions in RimWorld! It ensures there's always a track playing and introduces cues for specific tracks to play.]]>
     </description>
     <author>JME, Caaz, Odeum, Pphhyy the great, Zylle</author>
     <packageId>musicexpanded.framework</packageId>
@@ -10,7 +10,6 @@
     </supportedVersions>
     <loadAfter>
         <li>brrainz.harmony</li>
-        <li>VanillaExpanded.VEE</li>
     </loadAfter>
     <modDependencies>        
         <li>

@@ -24,4 +24,5 @@ jobs:
           Textures
           Sounds
           News
+          Languages
           *.md

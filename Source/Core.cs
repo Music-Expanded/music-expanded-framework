@@ -15,7 +15,7 @@ namespace MusicExpanded
         public Core(ModContentPack content) : base(content)
         {
             settings = GetSettings<Settings>();
-            var harmony = new Harmony("musicexpanded.core");
+            var harmony = new Harmony("musicexpanded.framework");
             harmony.PatchAll();
         }
         public override string SettingsCategory()

@@ -18,9 +18,9 @@ namespace MusicExpanded
         public bool AppropriateNow(SongDef lastPlayed = null, Cue cueMatch = Cue.None)
         {
             if (
-                (cue == Cue.HasColonistNamed && !Find.CurrentMap.PlayerPawnsForStoryteller.Where((pawn) => Utilities.NameMatches(pawn, cueData)).Any())
+                (cue == Cue.HasColonistNamed && Find.CurrentMap != null && !Find.CurrentMap.PlayerPawnsForStoryteller.Where((pawn) => Utilities.NameMatches(pawn, cueData)).Any())
                 || (cue != cueMatch || (lastPlayed != null && lastPlayed == this))
-                || (allowedBiomes != null && !allowedBiomes.Contains(Find.CurrentMap.Biome))
+                || (allowedBiomes != null && Find.CurrentMap != null && !allowedBiomes.Contains(Find.CurrentMap.Biome))
             )
                 return false;
 

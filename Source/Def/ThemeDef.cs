@@ -11,7 +11,21 @@ namespace MusicExpanded
 {
     public class ThemeDef : Def
     {
-        public static ThemeDef ActiveTheme => DefDatabase<ThemeDef>.GetNamed(Core.settings.selectedTheme);
+        public static ThemeDef ActiveTheme
+        {
+            get
+            {
+                ThemeDef theme = DefDatabase<ThemeDef>.GetNamedSilentFail(Core.settings.selectedTheme);
+                if (theme == null)
+                {
+                    Log.Warning("Couldn't find selected theme: " + Core.settings.selectedTheme + ", defaulting to vanilla theme.");
+                    theme = DefDatabase<ThemeDef>.GetNamedSilentFail("ME_Vanilla");
+                    Core.settings.selectedTheme = theme.defName;
+                    ThemeDef.ResolveSounds();
+                }
+                return theme;
+            }
+        }
         public List<TrackDef> tracks;
         public List<SoundDef> sounds = new List<SoundDef>();
         public string iconPath;

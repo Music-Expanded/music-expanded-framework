@@ -26,6 +26,14 @@ jobs:
         mv `ls -I ${{ env.mod_name }}` ${{ env.mod_name }}
         7z a ${{ env.mod_name }}.zip ${{ env.mod_name }}
         ls
+    - name: Create Github Release
+      uses: Hs1r1us/Release-AIO@v1.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+      with:
+        release_name: Automated Release ${{ github.run_number }}
+        tag_name: release/${{ github.run_number }}
+        asset_files: ${{env.mod_name}}.zip
     - name: Create Workshop Release
       if: env.workshop_id
       uses: weilbyte/steam-workshop-upload@v1
@@ -37,10 +45,3 @@ jobs:
         STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }} # Your Steam username
         STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }} # Your Steam password
         STEAM_TFASEED: ${{ secrets.STEAM_TFASEED }} # Your Steam Guard 2FA shared secret (Optional)
-    - name: Create Github Release
-      uses: Hs1r1us/Release-AIO@v1.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-      with:
-        tag_name: Release ${{ env.GITHUB_RUN_ID }}
-        asset_files: ${{env.mod_name}}.zip

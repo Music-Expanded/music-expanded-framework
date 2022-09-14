@@ -27,7 +27,7 @@ jobs:
         7z a ${{ env.mod_name }}.zip ${{ env.mod_name }}
         ls
     - name: Create Github Release
-      uses: Hs1r1us/Release-AIO@v1.0
+      uses: Hs1r1us/Release-AIO@v2.0.0
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       with:

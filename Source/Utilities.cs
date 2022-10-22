@@ -2,6 +2,8 @@ using Verse;
 using System.Linq;
 using System.Collections.Generic;
 using RimWorld;
+using HarmonyLib;
+using System;
 
 namespace MusicExpanded
 {
@@ -39,6 +41,19 @@ namespace MusicExpanded
         public static bool NameMatches(Pawn pawn, string name)
         {
             return pawn.Name.ToStringFull.ToLower().Contains(name.ToLower());
+        }
+        public static HashSet<ushort> GetHashes(Type type)
+        {
+            HashSet<ushort> hashset;
+            try
+            {
+                hashset = ((Dictionary<Type, HashSet<ushort>>)AccessTools.Field(typeof(ShortHashGiver), "takenHashesPerDeftype").GetValue(null))[type];
+            }
+            catch
+            {
+                hashset = new HashSet<ushort>();
+            }
+            return hashset;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
@@ -99,14 +100,16 @@ namespace MusicExpanded
             {
                 return DefDatabase<TrackDef>.GetNamedSilentFail(track.defName) == null;
             });
+            HashSet<ushort> trackHashes = Utilities.GetHashes(typeof(TrackDef));
             foreach (SongDef song in songs)
             {
                 TrackDef track = TrackDef.FromSong(song);
                 track.defName = "ME_Vanilla_" + song.defName;
-                giveShortHash.Invoke(null, new object[] { track, typeof(TrackDef) });
+                giveShortHash.Invoke(null, new object[] { track, typeof(TrackDef), trackHashes });
                 vanillaTheme.tracks.Add(track);
             }
-            giveShortHash.Invoke(null, new object[] { vanillaTheme, typeof(ThemeDef) });
+            HashSet<ushort> themeHashes = Utilities.GetHashes(typeof(ThemeDef));
+            giveShortHash.Invoke(null, new object[] { vanillaTheme, typeof(ThemeDef), themeHashes });
             DefDatabase<ThemeDef>.Add(vanillaTheme);
 
         }

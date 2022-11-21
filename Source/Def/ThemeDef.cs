@@ -66,6 +66,7 @@ namespace MusicExpanded
                     menuSong = SongDefOf.EntrySong;
 
                 audioSource.clip = menuSong.clip;
+                audioSource.Stop();
 
                 Patches.MusicManagerEntry.startPlaying.Invoke(manager, null);
             }

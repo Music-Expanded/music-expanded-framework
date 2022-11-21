@@ -16,8 +16,9 @@ jobs:
       with:
         name: MusicExpandedFramework
         path: |
+          1.3
+          1.4
           About
-          Assemblies
           Defs
           Patches
           Textures

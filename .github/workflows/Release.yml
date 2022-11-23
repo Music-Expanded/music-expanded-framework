@@ -34,13 +34,3 @@ jobs:
         release_name: Automated Release ${{ github.run_number }}
         tag_name: release/${{ github.run_number }}
         asset_files: ${{env.mod_name}}.zip
-    - name: Create Workshop Release
-      if: env.workshop_id
-      uses: weilbyte/steam-workshop-upload@v1
-      with: 
-        appid: 294100 # Rimworld's Steam App ID
-        itemid: ${{env.workshop_id}} # Your mod's Steam Workshop ID
-        path: ${{env.mod_name}} # Path to your mod's folder from repository root
-      env:
-        STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }} # Your Steam username
-        STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }} # Your Steam password

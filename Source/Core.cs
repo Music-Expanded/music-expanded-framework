@@ -36,7 +36,7 @@ namespace MusicExpanded
             List<ThemeDef> themes = DefDatabase<ThemeDef>.AllDefs.ToList();
 
             // The height of individual ThemeDef entries. 
-            float entryHeight = 140f;
+            float entryHeight = 180f;
             viewHeight = entryHeight * themes.Count() + 40f;
 
             Rect viewRect = new Rect(0f, 0f, inRect.width - 18f, viewHeight);

@@ -57,23 +57,26 @@ namespace MusicExpanded
         private void BuildThemeWidget(ThemeDef theme, Rect container)
         {
             if (theme.defName == selectedTheme)
-            {
                 Widgets.DrawHighlight(container);
-            }
-            Rect iconRect = container;
-            iconRect.xMax -= container.width - container.height;
-            iconRect.xMin = iconRect.xMax - container.height;
 
+            if (Widgets.ButtonInvisible(container))
+                ThemeDef.Select(theme);
+
+            // Render Icon
+            if (!theme.iconPath.NullOrEmpty())
+            {
+                Rect iconRect = container;
+                iconRect.xMax -= container.width - container.height;
+                iconRect.xMin = iconRect.xMax - container.height;
+                Texture2D icon = ContentFinder<Texture2D>.Get(theme.iconPath, true);
+                Widgets.DrawTextureFitted(iconRect, icon, 1);
+            }
+
+            // Render Info
             Rect textRect = container;
             textRect.xMin += container.height + 5f;
             textRect.xMax -= 5f;
             textRect.yMin += 5f;
-
-            if (!theme.iconPath.NullOrEmpty())
-            {
-                Texture2D icon = ContentFinder<Texture2D>.Get(theme.iconPath, true);
-                Widgets.DrawTextureFitted(iconRect, icon, 1);
-            }
 
             Listing_Standard textListing = new Listing_Standard();
             textListing.Begin(textRect);
@@ -82,14 +85,6 @@ namespace MusicExpanded
             textListing.Label(theme.label);
             Text.Font = GameFont.Small;
             textListing.Label(theme.description);
-
-            Rect selectButtonRect = textListing.GetRect(30f).LeftPartPixels(150f);
-
-            Listing_Standard selectButtonListing = new Listing_Standard();
-            selectButtonListing.Begin(selectButtonRect);
-            if (selectButtonListing.ButtonText("ME_SelectTheme".Translate()))
-                ThemeDef.Select(theme);
-            selectButtonListing.End();
 
             textListing.End();
         }

@@ -9,8 +9,6 @@ namespace MusicExpanded
     public class Core : Mod
     {
         public static Settings settings;
-        private static Vector2 scrollPosition = Vector2.zero;
-        private static float viewHeight;
 
         public Core(ModContentPack content) : base(content)
         {

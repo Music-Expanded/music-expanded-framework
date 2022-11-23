@@ -79,7 +79,7 @@ namespace MusicExpanded.Patches
             static bool Prefix(RimWorld.MusicManagerPlay __instance)
             {
                 bool gameObjectCreated = (bool)MusicManagerPlay.gameObjectCreated.GetValue(__instance);
-                if (!gameObjectCreated || __instance.IsPlaying || __instance.disabled)
+                if (Core.settings.vanillaMusicUpdate || !gameObjectCreated || __instance.IsPlaying || __instance.disabled)
                     return true;
                 try
                 {

@@ -6,6 +6,8 @@
   <ME_SelectTheme>Select Theme</ME_SelectTheme>
   <ME_ShowNowPlaying>Show Now Playing</ME_ShowNowPlaying>
   <ME_ShowNowPlayingDescription>When on, a message will appear with the title of the currently selected track.</ME_ShowNowPlayingDescription>
+  <ME_VanillaMusicUpdate>Vanilla Music Update</ME_VanillaMusicUpdate>
+  <ME_VanillaMusicUpdateDescription>When on, RimWorld will play music periodically, rather than constantly.</ME_VanillaMusicUpdateDescription>
   <ME_NowPlaying>Now Playing: {0}</ME_NowPlaying>
   <!-- Vanilla Theme -->
   <ME_Vanilla_Label>Music Expanded: Vanilla</ME_Vanilla_Label>

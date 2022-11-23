@@ -9,6 +9,7 @@ namespace MusicExpanded
     {
         public string selectedTheme = "ME_Vanilla";
         public bool showNowPlaying = true;
+        public bool vanillaMusicUpdate = false;
         private static Vector2 scrollPosition = Vector2.zero;
         private static Rect settingsContainer;
         private static float ThemeSelectionHeight = 180f;
@@ -19,22 +20,32 @@ namespace MusicExpanded
         {
             Scribe_Values.Look(ref selectedTheme, "selectedTheme", "ME_Vanilla");
             Scribe_Values.Look(ref showNowPlaying, "showNowPlaying", true);
+            Scribe_Values.Look(ref vanillaMusicUpdate, "vanillaMusicUpdate", false);
         }
         public void Build(Rect container)
         {
             settingsContainer = container;
             Listing_Standard list = new Listing_Standard();
             list.Begin(container);
-            BuildNowPlaying(list);
+
+            Rect checkboxRow = list.GetRect(30f);
+            BuildNowPlaying(checkboxRow.LeftHalf());
+            BuildVanillaMusicUpdate(checkboxRow.RightHalf());
             BuildThemeSelector(list);
             list.End();
         }
-        private void BuildNowPlaying(Listing_Standard container)
+        private void BuildNowPlaying(Rect container)
         {
             Listing_Standard checkboxListing = new Listing_Standard();
-            Rect checkboxRect = container.GetRect(30f).LeftHalf();
-            checkboxListing.Begin(checkboxRect);
+            checkboxListing.Begin(container);
             checkboxListing.CheckboxLabeled("ME_ShowNowPlaying".Translate(), ref showNowPlaying, "ME_ShowNowPlayingDescription".Translate());
+            checkboxListing.End();
+        }
+        private void BuildVanillaMusicUpdate(Rect container)
+        {
+            Listing_Standard checkboxListing = new Listing_Standard();
+            checkboxListing.Begin(container);
+            checkboxListing.CheckboxLabeled("ME_VanillaMusicUpdate".Translate(), ref vanillaMusicUpdate, "ME_VanillaMusicUpdateDescription".Translate());
             checkboxListing.End();
         }
         private void BuildThemeSelector(Listing_Standard list)
@@ -45,6 +56,8 @@ namespace MusicExpanded
                 ref scrollPosition,
                 viewRect
             );
+            Text.Font = GameFont.Medium;
+            list.Label("Available Themes");
             Listing_Standard themeList = new Listing_Standard();
             themeList.Begin(viewRect);
             foreach (ThemeDef theme in DefDatabase<ThemeDef>.AllDefsListForReading)

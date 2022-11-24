@@ -92,16 +92,5 @@ namespace MusicExpanded.Patches
                 return false;
             }
         }
-
-        [HarmonyPatch(typeof(RimWorld.MusicManagerPlay), "ForceStartSong")]
-        class ForceStartSong
-        {
-            static bool Prefix(RimWorld.MusicManagerPlay __instance, SongDef song)
-            {
-                bool gameObjectCreated = (bool)MusicManagerPlay.gameObjectCreated.GetValue(__instance);
-                MusicManagerPlay.forcedSong.SetValue(__instance, song);
-                return !(!gameObjectCreated);
-            }
-        }
     }
 }

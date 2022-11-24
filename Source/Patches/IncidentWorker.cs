@@ -7,16 +7,9 @@ using Verse;
 
 namespace MusicExpanded.Patches
 {
-    [HarmonyPatch]
+    [HarmonyPatch(typeof(RimWorld.IncidentWorker), "TryExecute")]
     public class IncidentWorker
     {
-        static IEnumerable<MethodBase> TargetMethods()
-        {
-            return AccessTools.AllTypes()
-                .Where(type => type.IsSubclassOf(typeof(RimWorld.IncidentWorker)))
-                .SelectMany(type => type.GetMethods())
-                .Where(method => method.Name == "TryExecute");
-        }
         static void Postfix(RimWorld.IncidentWorker __instance, IncidentParms parms, ref bool __result)
         {
             if (__result != true) return;

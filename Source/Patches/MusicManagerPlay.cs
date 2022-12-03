@@ -18,6 +18,11 @@ namespace MusicExpanded.Patches
         {
             static bool Prefix(RimWorld.MusicManagerPlay __instance, ref SongDef __result)
             {
+                if (!Verse.Prefs.RunInBackground && !Core.settings.vanillaMusicUpdate)
+                {
+                    Log.Error("Using Music Expanded Framework while RimWorld's setting \"RunInBackground\" is disabled is known to cause issues! Enabling \"vanillaMusicUpdate\" setting in Music Expanded Framework settings to ensure proper compatibility. If you'd like to use our custom update, enable RimWorld's \"Run In Background\" setting, and disable Music Expanded Frameworks's \"Vanilla Music Update\"");
+                    Core.settings.vanillaMusicUpdate = true;
+                }
                 System.Object forcedSong = MusicManagerPlay.forcedSong.GetValue(__instance);
                 if (forcedSong != null)
                 {

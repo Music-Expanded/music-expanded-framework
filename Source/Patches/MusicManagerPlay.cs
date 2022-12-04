@@ -35,7 +35,6 @@ namespace MusicExpanded.Patches
                 // Battle track decay
                 if (lastTrack != null)
                 {
-                    Log.Message("Battle track?");
                     TrackDef lastTrackAsTrackDef = ThemeDef.TrackByDefName(lastTrack.defName);
                     if (lastTrackAsTrackDef != null && lastTrackAsTrackDef.IsBattleTrack)
                     {
@@ -51,7 +50,6 @@ namespace MusicExpanded.Patches
 
                 if (tracks == null || !tracks.Any())
                 {
-                    Log.Message("Narrowing down tracks to appropriate");
                     tracks = ThemeDef.ActiveTheme.tracks.Where(track => track.AppropriateNow(lastTrack));
                 }
                 if (!tracks.Any())
@@ -59,7 +57,6 @@ namespace MusicExpanded.Patches
                     Log.Warning("Tried to play a track from the theme, but none were appropriate right now. This theme requires more tracks.");
                     return false;
                 }
-                Log.Message("Actually returning chosen track.");
                 SongDef chosenTrack = tracks.RandomElementByWeight((TrackDef s) => s.commonality) as SongDef;
                 Utilities.ShowNowPlaying(chosenTrack);
                 __result = chosenTrack;

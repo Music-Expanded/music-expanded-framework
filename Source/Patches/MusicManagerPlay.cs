@@ -87,7 +87,6 @@ namespace MusicExpanded.Patches
                     return true;
                 try
                 {
-                    Log.Message(__instance.DebugString());
                     if (!__instance.IsPlaying)
                         startNewSong.Invoke(__instance, null);
                 }

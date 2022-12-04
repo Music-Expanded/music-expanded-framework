@@ -18,7 +18,6 @@ namespace MusicExpanded.Patches
         {
             static bool Prefix(RimWorld.MusicManagerPlay __instance, ref SongDef __result)
             {
-                Log.Message("choosing next song");
                 if (!Verse.Prefs.RunInBackground && !Core.settings.vanillaMusicUpdate)
                 {
                     Log.Error("Using Music Expanded Framework while RimWorld's setting \"RunInBackground\" is disabled is known to cause issues! Enabling \"vanillaMusicUpdate\" setting in Music Expanded Framework settings to ensure proper compatibility. If you'd like to use our custom update, enable RimWorld's \"Run In Background\" setting, and disable Music Expanded Frameworks's \"Vanilla Music Update\"");
@@ -36,12 +35,9 @@ namespace MusicExpanded.Patches
                 // Battle track decay
                 if (lastTrack != null)
                 {
-                    Log.Message("Battle track?");
                     TrackDef lastTrackAsTrackDef = ThemeDef.TrackByDefName(lastTrack.defName);
                     if (lastTrackAsTrackDef != null && lastTrackAsTrackDef.IsBattleTrack)
                     {
-                        Log.Message("it's a battle track, decay it");
-
                         Map map = Find.AnyPlayerHomeMap ?? Find.CurrentMap;
                         if (map.dangerWatcher.DangerRating == StoryDanger.High)
                         {
@@ -54,7 +50,6 @@ namespace MusicExpanded.Patches
 
                 if (tracks == null || !tracks.Any())
                 {
-                    Log.Message("Narrowing down tracks to appropriate");
                     tracks = ThemeDef.ActiveTheme.tracks.Where(track => track.AppropriateNow(lastTrack));
                 }
                 if (!tracks.Any())
@@ -62,7 +57,6 @@ namespace MusicExpanded.Patches
                     Log.Warning("Tried to play a track from the theme, but none were appropriate right now. This theme requires more tracks.");
                     return false;
                 }
-                Log.Message("Actually returning chosen track.");
                 SongDef chosenTrack = tracks.RandomElementByWeight((TrackDef s) => s.commonality) as SongDef;
                 Utilities.ShowNowPlaying(chosenTrack);
                 __result = chosenTrack;
@@ -93,8 +87,6 @@ namespace MusicExpanded.Patches
                     return true;
                 try
                 {
-                    Log.Message("Starting new song");
-                    Log.Message(__instance.DebugString());
                     if (!__instance.IsPlaying)
                         startNewSong.Invoke(__instance, null);
                 }

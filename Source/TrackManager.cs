@@ -1,12 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using HarmonyLib;
-using RimWorld;
-using UnityEngine;
 using Verse;
-using Verse.Sound;
 
 namespace MusicExpanded
 {
@@ -37,29 +31,6 @@ namespace MusicExpanded
         public static void Remove(ThemeDef theme)
         {
             tracks.RemoveAll(track => theme.tracks.Contains(track));
-        }
-        public static void StartNewSong()
-        {
-            try
-            {
-                MusicManagerPlay manager = Find.MusicManagerPlay;
-                if (manager != null && manager.IsPlaying)
-                    Patches.MusicManagerPlay.startNewSong.Invoke(manager, null);
-            }
-            catch
-            {
-                MusicManagerEntry manager = Find.MusicManagerEntry;
-                AudioSource audioSource = Patches.MusicManagerEntry.audioSourceField.GetValue(manager) as AudioSource;
-
-                SongDef menuSong = GetTrack(Cue.MainMenu) as SongDef;
-                if (menuSong == null)
-                    menuSong = SongDefOf.EntrySong;
-
-                audioSource.clip = menuSong.clip;
-                audioSource.Stop();
-
-                Patches.MusicManagerEntry.startPlaying.Invoke(manager, null);
-            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace MusicExpanded.Patches
@@ -14,6 +15,7 @@ namespace MusicExpanded.Patches
         public static FieldInfo forcedSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "forcedNextSong");
         public static FieldInfo lastStartedSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "lastStartedSong");
         public static FieldInfo ignorePrefsVolumeThisSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "ignorePrefsVolumeThisSong");
+        public static FieldInfo audioSource = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "audioSource");
         [HarmonyPatch(typeof(RimWorld.MusicManagerPlay), "ChooseNextSong")]
         class ChooseNextSong
         {
@@ -92,6 +94,11 @@ namespace MusicExpanded.Patches
                     {
                         MusicManagerPlay.ignorePrefsVolumeThisSong.SetValue(__instance, false);
                         startNewSong.Invoke(__instance, null);
+                    }
+                    else
+                    {
+                        AudioSource audioSource = (AudioSource)MusicManagerPlay.audioSource.GetValue(__instance);
+                        audioSource.volume = __instance.CurSanitizedVolume;
                     }
                 }
                 catch

@@ -13,6 +13,7 @@ namespace MusicExpanded.Patches
         public static FieldInfo gameObjectCreated = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "gameObjectCreated");
         public static FieldInfo forcedSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "forcedNextSong");
         public static FieldInfo lastStartedSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "lastStartedSong");
+        public static FieldInfo ignorePrefsVolumeThisSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "ignorePrefsVolumeThisSong");
         [HarmonyPatch(typeof(RimWorld.MusicManagerPlay), "ChooseNextSong")]
         class ChooseNextSong
         {
@@ -88,7 +89,10 @@ namespace MusicExpanded.Patches
                 try
                 {
                     if (!__instance.IsPlaying)
+                    {
+                        MusicManagerPlay.ignorePrefsVolumeThisSong.SetValue(__instance, false);
                         startNewSong.Invoke(__instance, null);
+                    }
                 }
                 catch
                 {

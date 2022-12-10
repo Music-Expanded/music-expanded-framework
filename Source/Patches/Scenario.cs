@@ -21,7 +21,7 @@ namespace MusicExpanded.Patches
                 }
                 else
                 {
-                    IEnumerable<TrackDef> tracks = ThemeDef.TracksWithNamedColonist;
+                    IEnumerable<TrackDef> tracks = TrackManager.TracksWithNamedColonist;
                     foreach (Pawn pawn in pawns)
                         if (Utilities.PlayTrack(tracks.Where(track => Utilities.NameMatches(pawn, track.cueData))))
                             return;

@@ -73,7 +73,7 @@ namespace MusicExpanded
                 Widgets.DrawHighlight(container);
 
             if (Widgets.ButtonInvisible(container))
-                ThemeDef.Select(theme);
+                TrackManager.Select(theme);
 
             // Render Icon
             if (!theme.iconPath.NullOrEmpty())

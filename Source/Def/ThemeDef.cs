@@ -30,47 +30,8 @@ namespace MusicExpanded
         public List<TrackDef> tracks;
         public List<SoundDef> sounds = new List<SoundDef>();
         public string iconPath;
-        public static IEnumerable<TrackDef> TracksWithNamedColonist => ActiveTheme.tracks.Where(track => track.cue == Cue.HasColonistNamed);
-        public static TrackDef TrackByDefName(string defName) => ActiveTheme.tracks.Find(track => track.defName == defName);
-        public static IEnumerable<TrackDef> TracksByCue(Cue cue, string data = null)
-        {
-            IEnumerable<TrackDef> tracks = ActiveTheme.tracks.Where(track =>
-            {
-                if (!data.NullOrEmpty() && track.cueData != data) return false;
-                return track.AppropriateNow(null, cue);
-            });
-            return tracks;
-        }
         private static Dictionary<string, List<SubSoundDef>> vanillaSubSounds = new Dictionary<string, List<SubSoundDef>>();
         private static MethodInfo giveShortHash = AccessTools.Method(typeof(Verse.ShortHashGiver), "GiveShortHash");
-        public static void Select(ThemeDef theme)
-        {
-            Core.settings.selectedTheme = theme.defName;
-            ThemeDef.ResolveSounds();
-
-            try
-            {
-                MusicManagerPlay manager = Find.MusicManagerPlay;
-                if (manager != null && manager.IsPlaying)
-                {
-                    Patches.MusicManagerPlay.startNewSong.Invoke(manager, null);
-                }
-            }
-            catch
-            {
-                MusicManagerEntry manager = Find.MusicManagerEntry;
-                AudioSource audioSource = Patches.MusicManagerEntry.audioSourceField.GetValue(manager) as AudioSource;
-
-                SongDef menuSong = Utilities.GetTrack(Cue.MainMenu) as SongDef;
-                if (menuSong == null)
-                    menuSong = SongDefOf.EntrySong;
-
-                audioSource.clip = menuSong.clip;
-                audioSource.Stop();
-
-                Patches.MusicManagerEntry.startPlaying.Invoke(manager, null);
-            }
-        }
         public static void ResolveSounds(ThemeDef theme = null)
         {
             GenerateVanillaTheme();
@@ -123,6 +84,29 @@ namespace MusicExpanded
                 vanillaSound.subSounds = subSounds;
                 vanillaSound.ResolveReferences();
                 vanillaSubSounds.Remove(vanillaSound.defName);
+            }
+        }
+        public void Preview()
+        {
+            try
+            {
+                MusicManagerPlay manager = Find.MusicManagerPlay;
+                if (manager != null && manager.IsPlaying)
+                    manager.ForceStartSong(tracks.RandomElement() as SongDef, false);
+            }
+            catch
+            {
+                MusicManagerEntry manager = Find.MusicManagerEntry;
+                AudioSource audioSource = Patches.MusicManagerEntry.audioSourceField.GetValue(manager) as AudioSource;
+
+                SongDef menuSong = tracks.Where(track => track.cue == Cue.MainMenu).RandomElement() as SongDef;
+                if (menuSong == null)
+                    menuSong = SongDefOf.EntrySong;
+
+                audioSource.clip = menuSong.clip;
+                audioSource.Stop();
+
+                Patches.MusicManagerEntry.startPlaying.Invoke(manager, null);
             }
         }
     }

@@ -28,7 +28,7 @@ namespace MusicExpanded.Patches
                     return false;
                 }
                 // Figure out the menu track to play
-                SongDef menuSong = Utilities.GetTrack(Cue.MainMenu) as SongDef;
+                SongDef menuSong = TrackManager.GetTrack(Cue.MainMenu) as SongDef;
                 // Fall back if there is none
                 if (menuSong == null)
                     menuSong = SongDefOf.EntrySong;

@@ -38,7 +38,7 @@ namespace MusicExpanded.Patches
                 // Battle track decay
                 if (lastTrack != null)
                 {
-                    TrackDef lastTrackAsTrackDef = ThemeDef.TrackByDefName(lastTrack.defName);
+                    TrackDef lastTrackAsTrackDef = TrackManager.TrackByDefName(lastTrack.defName);
                     if (lastTrackAsTrackDef != null && lastTrackAsTrackDef.IsBattleTrack)
                     {
                         Map map = Find.AnyPlayerHomeMap ?? Find.CurrentMap;
@@ -46,14 +46,14 @@ namespace MusicExpanded.Patches
                         {
                             Cue battleCue = (Cue)(lastTrackAsTrackDef.cue - 1);
                             if (battleCue != Cue.None)
-                                tracks = ThemeDef.TracksByCue(battleCue);
+                                tracks = TrackManager.TracksByCue(battleCue);
                         }
                     }
                 }
 
                 if (tracks == null || !tracks.Any())
                 {
-                    tracks = ThemeDef.ActiveTheme.tracks.Where(track => track.AppropriateNow(lastTrack));
+                    tracks = TrackManager.tracks.Where(track => track.AppropriateNow(lastTrack));
                 }
                 if (!tracks.Any())
                 {
@@ -71,7 +71,7 @@ namespace MusicExpanded.Patches
         {
             static bool Prefix(ref SongDef __result)
             {
-                TrackDef track = Utilities.GetTrack(Cue.Credits);
+                TrackDef track = TrackManager.GetTrack(Cue.Credits);
                 if (track != null)
                 {
                     __result = track as SongDef;

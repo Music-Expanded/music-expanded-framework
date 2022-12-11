@@ -62,10 +62,45 @@ namespace MusicExpanded
             themeList.Begin(viewRect);
             foreach (ThemeDef theme in DefDatabase<ThemeDef>.AllDefsListForReading)
             {
-                BuildThemeWidget(theme, themeList.GetRect(ThemeSelectionHeight));
+                BuildThemeWidgetNew(theme, themeList.GetRect(ThemeSelectionHeight));
             }
             themeList.End();
             Widgets.EndScrollView();
+        }
+        private void BuildThemeWidgetNew(ThemeDef theme, Rect container)
+        {
+
+            if (Widgets.ButtonInvisible(container))
+                theme.Preview();
+
+            Rect iconRect = container.LeftPartPixels(ThemeSelectionHeight);
+            iconRect.y += 5;
+            iconRect.yMax -= 5;
+            if (!theme.iconPath.NullOrEmpty())
+            {
+                Texture2D icon = ContentFinder<Texture2D>.Get(theme.iconPath, true);
+                Widgets.DrawTextureFitted(iconRect, icon, 1);
+            }
+            Rect rightSide = container.RightPartPixels(container.width - iconRect.width - 18f);
+            // Rect labelArea = rightSide.TopPart(.60f);
+            Rect buttonArea = rightSide.BottomPartPixels(20);
+            Text.Font = GameFont.Medium;
+            Widgets.Label(rightSide, theme.label);
+            // Rect leftTwix = buttonArea.LeftPart(.5f);
+            Rect rightTwix = buttonArea.RightPart(.5f);
+            Text.Font = GameFont.Small;
+            rightSide.y += 25;
+            Widgets.Label(rightSide, theme.description);
+            // ThemeButton("Info", leftTwix.LeftPart(.5f));
+            // ThemeButton("Preview", leftTwix.RightPart(.5f));
+            ThemeButton("Enable Theme", rightTwix.LeftPart(.5f));
+            ThemeButton("Enable Sounds", rightTwix.RightPart(.5f));
+            Widgets.DrawLineHorizontal(container.x, container.y + container.height, container.width);
+        }
+        private bool ThemeButton(string text, Rect container)
+        {
+            container.xMax -= 10f;
+            return Widgets.ButtonText(container, text);
         }
         private void BuildThemeWidget(ThemeDef theme, Rect container)
         {

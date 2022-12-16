@@ -108,5 +108,17 @@ namespace MusicExpanded.Patches
                 return false;
             }
         }
+        // Solves this issue: https://github.com/Music-Expanded/music-expanded-framework/issues/56
+        // Essentially, if a track is forced to play before the game has begun, don't try to play it immediately, but store it.
+        [HarmonyPatch(typeof(RimWorld.MusicManagerPlay), "ForceStartSong")]
+        class ForceStartSong
+        {
+            static bool Prefix(RimWorld.MusicManagerPlay __instance, SongDef song)
+            {
+                bool gameObjectCreated = (bool)MusicManagerPlay.gameObjectCreated.GetValue(__instance);
+                MusicManagerPlay.forcedSong.SetValue(__instance, song);
+                return !(!gameObjectCreated);
+            }
+        }
     }
 }

@@ -57,8 +57,9 @@ namespace MusicExpanded.Patches
                 }
                 if (!tracks.Any())
                 {
-                    Log.Warning("Tried to play a track from the theme, but none were appropriate right now. This theme requires more tracks.");
-                    return false;
+                    Log.Warning("Couldn't find a track to play, enabling Vanilla Theme to (hopefully) avoid this in the future. Playing a random track from all possible tracks.");
+                    Core.settings.Enable(ThemeDef.VanillaTheme);
+                    tracks = TrackManager.tracks;
                 }
                 SongDef chosenTrack = tracks.RandomElementByWeight((TrackDef s) => s.commonality) as SongDef;
                 Utilities.ShowNowPlaying(chosenTrack);

@@ -15,7 +15,7 @@ namespace MusicExpanded.Patches
         {
             static bool Prefix(RimWorld.MusicManagerEntry __instance)
             {
-                ThemeDef.ResolveSounds();
+                TrackManager.Init();
                 AudioSource audioSource = audioSourceField.GetValue(__instance) as AudioSource;
                 if (audioSource != null && !audioSource.isPlaying)
                 {
@@ -28,7 +28,7 @@ namespace MusicExpanded.Patches
                     return false;
                 }
                 // Figure out the menu track to play
-                SongDef menuSong = Utilities.GetTrack(Cue.MainMenu) as SongDef;
+                SongDef menuSong = TrackManager.GetTrack(Cue.MainMenu) as SongDef;
                 // Fall back if there is none
                 if (menuSong == null)
                     menuSong = SongDefOf.EntrySong;

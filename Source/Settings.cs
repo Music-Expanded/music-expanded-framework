@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
@@ -7,8 +8,9 @@ namespace MusicExpanded
 
     public class Settings : ModSettings
     {
-        public string selectedTheme = "ME_Vanilla";
+        public Dictionary<string, bool> enabledThemes = new Dictionary<string, bool>();
         public bool showNowPlaying = true;
+        public string selectedTheme = "ME_Vanilla";
         public bool vanillaMusicUpdate = false;
         private static Vector2 scrollPosition = Vector2.zero;
         private static Rect settingsContainer;
@@ -18,9 +20,9 @@ namespace MusicExpanded
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref selectedTheme, "selectedTheme", "ME_Vanilla");
             Scribe_Values.Look(ref showNowPlaying, "showNowPlaying", true);
             Scribe_Values.Look(ref vanillaMusicUpdate, "vanillaMusicUpdate", false);
+            Scribe_Collections.Look(ref enabledThemes, "enabledThemes", LookMode.Value, LookMode.Value);
         }
         public void Build(Rect container)
         {
@@ -69,12 +71,18 @@ namespace MusicExpanded
         }
         private void BuildThemeWidget(ThemeDef theme, Rect container)
         {
-            if (theme.defName == selectedTheme)
+            bool isEnabled = enabledThemes.TryGetValue(theme.defName, false);
+
+            if (isEnabled)
                 Widgets.DrawHighlight(container);
 
             if (Widgets.ButtonInvisible(container))
-                ThemeDef.Select(theme);
-
+            {
+                if (isEnabled)
+                    Disable(theme);
+                else
+                    Enable(theme, true);
+            }
             // Render Icon
             if (!theme.iconPath.NullOrEmpty())
             {
@@ -84,7 +92,6 @@ namespace MusicExpanded
                 Texture2D icon = ContentFinder<Texture2D>.Get(theme.iconPath, true);
                 Widgets.DrawTextureFitted(iconRect, icon, 1);
             }
-
             // Render Info
             Rect textRect = container;
             textRect.xMin += container.height + 5f;
@@ -100,6 +107,17 @@ namespace MusicExpanded
             textListing.Label(theme.description);
 
             textListing.End();
+        }
+        public void Enable(ThemeDef theme, bool preview = false)
+        {
+            enabledThemes.Add(theme.defName, true);
+            TrackManager.Add(theme);
+            if (preview) theme.Preview();
+        }
+        public void Disable(ThemeDef theme)
+        {
+            enabledThemes.Remove(theme.defName);
+            TrackManager.Remove(theme);
         }
     }
 }

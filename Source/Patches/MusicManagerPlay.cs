@@ -38,7 +38,7 @@ namespace MusicExpanded.Patches
                 // Battle track decay
                 if (lastTrack != null)
                 {
-                    TrackDef lastTrackAsTrackDef = ThemeDef.TrackByDefName(lastTrack.defName);
+                    TrackDef lastTrackAsTrackDef = TrackManager.TrackByDefName(lastTrack.defName);
                     if (lastTrackAsTrackDef != null && lastTrackAsTrackDef.IsBattleTrack)
                     {
                         Map map = Find.AnyPlayerHomeMap ?? Find.CurrentMap;
@@ -46,19 +46,20 @@ namespace MusicExpanded.Patches
                         {
                             Cue battleCue = (Cue)(lastTrackAsTrackDef.cue - 1);
                             if (battleCue != Cue.None)
-                                tracks = ThemeDef.TracksByCue(battleCue);
+                                tracks = TrackManager.TracksByCue(battleCue);
                         }
                     }
                 }
 
                 if (tracks == null || !tracks.Any())
                 {
-                    tracks = ThemeDef.ActiveTheme.tracks.Where(track => track.AppropriateNow(lastTrack));
+                    tracks = TrackManager.tracks.Where(track => track.AppropriateNow(lastTrack));
                 }
                 if (!tracks.Any())
                 {
-                    Log.Warning("Tried to play a track from the theme, but none were appropriate right now. This theme requires more tracks.");
-                    return false;
+                    Log.Warning("Couldn't find a track to play, enabling Vanilla Theme to (hopefully) avoid this in the future. Playing a random track from all possible tracks.");
+                    Core.settings.Enable(ThemeDef.VanillaTheme);
+                    tracks = TrackManager.tracks;
                 }
                 SongDef chosenTrack = tracks.RandomElementByWeight((TrackDef s) => s.commonality) as SongDef;
                 Utilities.ShowNowPlaying(chosenTrack);
@@ -71,7 +72,7 @@ namespace MusicExpanded.Patches
         {
             static bool Prefix(ref SongDef __result)
             {
-                TrackDef track = Utilities.GetTrack(Cue.Credits);
+                TrackDef track = TrackManager.GetTrack(Cue.Credits);
                 if (track != null)
                 {
                     __result = track as SongDef;

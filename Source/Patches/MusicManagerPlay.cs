@@ -13,6 +13,7 @@ namespace MusicExpanded.Patches
         public static MethodInfo startNewSong = AccessTools.Method(typeof(RimWorld.MusicManagerPlay), "StartNewSong");
         public static FieldInfo gameObjectCreated = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "gameObjectCreated");
         public static FieldInfo forcedSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "forcedNextSong");
+        public static MethodInfo dangerMusicMode = AccessTools.Method(typeof(RimWorld.MusicManagerPlay), "DangerMusicMode");
         public static FieldInfo lastStartedSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "lastStartedSong");
         public static FieldInfo ignorePrefsVolumeThisSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "ignorePrefsVolumeThisSong");
         public static FieldInfo audioSource = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "audioSource");
@@ -34,7 +35,6 @@ namespace MusicExpanded.Patches
                 }
                 SongDef lastTrack = MusicManagerPlay.lastStartedSong.GetValue(__instance) as SongDef;
                 IEnumerable<TrackDef> tracks = null;
-
                 // Battle track decay
                 if (lastTrack != null)
                 {
@@ -53,7 +53,12 @@ namespace MusicExpanded.Patches
 
                 if (tracks == null || !tracks.Any())
                 {
-                    tracks = TrackManager.tracks.Where(track => track.AppropriateNow(lastTrack));
+                    bool danger = false;
+                    try {
+                        danger = (bool)dangerMusicMode.Invoke(__instance, null);
+                    } catch {}
+                    Log.Message("Danger mode: "+danger);
+                    tracks = TrackManager.tracks.Where(track => track.AppropriateNow(lastTrack, tense:danger));
                 }
                 if (!tracks.Any())
                 {

@@ -16,13 +16,14 @@ namespace MusicExpanded
         public bool IsBattleTrack => (cue <= Cue.BattleLegendary && cue >= Cue.BattleSmall);
         public List<BiomeDef> allowedBiomes;
         public List<TechLevel> allowedTechLevels;
-        public bool AppropriateNow(SongDef lastPlayed = null, Cue cueMatch = Cue.None)
+        public bool AppropriateNow(SongDef lastPlayed = null, Cue cueMatch = Cue.None, bool tense = false)
         {
             if (
                 (cue == Cue.HasColonistNamed && Find.CurrentMap != null && !Find.CurrentMap.PlayerPawnsForStoryteller.Where((pawn) => Utilities.NameMatches(pawn, cueData)).Any())
                 || (cue != cueMatch || (lastPlayed != null && lastPlayed == this))
                 || (allowedBiomes != null && Find.CurrentMap != null && !allowedBiomes.Contains(Find.CurrentMap.Biome))
                 || (allowedTechLevels != null && !allowedTechLevels.Contains(Find.FactionManager.OfPlayer.def.techLevel))
+                || (tense && !this.tense)
             )
                 return false;
 

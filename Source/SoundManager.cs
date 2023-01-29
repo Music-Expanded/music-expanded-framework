@@ -9,6 +9,10 @@ namespace MusicExpanded
     public static class SoundManager
     {
         private static Dictionary<string, List<SubSoundDef>> vanillaSubSounds = new Dictionary<string, List<SubSoundDef>>();
+        public static void Init()
+        {
+            ActivateSounds(Core.settings.SoundTheme);
+        }
         public static void ActivateSounds(ThemeDef theme)
         {
             List<Verse.SoundDef> vanillaSoundDefs = DefDatabase<Verse.SoundDef>.AllDefsListForReading;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace MusicExpanded
         private static float ThemeSelectionHeight = 180f;
         private static float ThemeSelectorHeight =>
             DefDatabase<ThemeDef>.AllDefsListForReading.Count() * ThemeSelectionHeight;
-
+        public ThemeDef SoundTheme => DefDatabase<ThemeDef>.GetNamedSilentFail(selectedSoundTheme);
         public override void ExposeData()
         {
             Scribe_Values.Look(ref showNowPlaying, "showNowPlaying", true);
@@ -40,6 +41,27 @@ namespace MusicExpanded
             BuildThemeSelector(list);
             list.End();
         }
+
+        private void BuildSoundSelector(Rect container)
+        {
+            Listing_Standard listing = new Listing_Standard();
+            listing.Begin(container);
+            if (listing.ButtonTextLabeled("ME_SelectSounds".Translate(), SoundTheme.label, tooltip: "ME_SelectSoundsDescription".Translate()))
+            {
+                List<FloatMenuOption> list = new List<FloatMenuOption>();
+                foreach (ThemeDef theme in DefDatabase<ThemeDef>.AllDefsListForReading)
+                {
+                    list.Add(new FloatMenuOption(theme.label, delegate
+                    {
+                        selectedSoundTheme = theme.defName;
+                        SoundManager.ActivateSounds(theme);
+                    }));
+                }
+                Find.WindowStack.Add(new FloatMenu(list));
+            }
+            listing.End();
+        }
+
         private void BuildNowPlaying(Rect container)
         {
             Listing_Standard checkboxListing = new Listing_Standard();

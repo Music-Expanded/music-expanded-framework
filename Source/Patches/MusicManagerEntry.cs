@@ -15,7 +15,7 @@ namespace MusicExpanded.Patches
         {
             static bool Prefix(RimWorld.MusicManagerEntry __instance)
             {
-                TrackManager.Init();
+                Core.Init();
                 AudioSource audioSource = audioSourceField.GetValue(__instance) as AudioSource;
                 if (audioSource != null && !audioSource.isPlaying)
                 {

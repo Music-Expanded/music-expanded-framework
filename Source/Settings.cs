@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,17 +12,19 @@ namespace MusicExpanded
         public Dictionary<string, bool> enabledThemes = new Dictionary<string, bool>();
         public bool showNowPlaying = true;
         public string selectedTheme = "ME_Vanilla";
+        public string selectedSoundTheme = "ME_Vanilla";
         public bool vanillaMusicUpdate = false;
         private static Vector2 scrollPosition = Vector2.zero;
         private static Rect settingsContainer;
         private static float ThemeSelectionHeight = 180f;
         private static float ThemeSelectorHeight =>
             DefDatabase<ThemeDef>.AllDefsListForReading.Count() * ThemeSelectionHeight;
-
+        public ThemeDef SoundTheme => DefDatabase<ThemeDef>.GetNamedSilentFail(selectedSoundTheme);
         public override void ExposeData()
         {
             Scribe_Values.Look(ref showNowPlaying, "showNowPlaying", true);
             Scribe_Values.Look(ref vanillaMusicUpdate, "vanillaMusicUpdate", false);
+            Scribe_Values.Look(ref selectedSoundTheme, "selectedSoundTheme", "ME_Vanilla");
             Scribe_Collections.Look(ref enabledThemes, "enabledThemes", LookMode.Value, LookMode.Value);
         }
         public void Build(Rect container)
@@ -33,9 +36,32 @@ namespace MusicExpanded
             Rect checkboxRow = list.GetRect(30f);
             BuildNowPlaying(checkboxRow.LeftHalf());
             BuildVanillaMusicUpdate(checkboxRow.RightHalf());
+            Rect soundRow = list.GetRect(30f);
+            BuildSoundSelector(soundRow);
             BuildThemeSelector(list);
             list.End();
         }
+
+        private void BuildSoundSelector(Rect container)
+        {
+            Listing_Standard listing = new Listing_Standard();
+            listing.Begin(container);
+            if (listing.ButtonTextLabeled("ME_SelectSounds".Translate(), SoundTheme.label, tooltip: "ME_SelectSoundsDescription".Translate()))
+            {
+                List<FloatMenuOption> list = new List<FloatMenuOption>();
+                foreach (ThemeDef theme in DefDatabase<ThemeDef>.AllDefsListForReading)
+                {
+                    list.Add(new FloatMenuOption(theme.label, delegate
+                    {
+                        selectedSoundTheme = theme.defName;
+                        SoundManager.ActivateSounds(theme);
+                    }));
+                }
+                Find.WindowStack.Add(new FloatMenu(list));
+            }
+            listing.End();
+        }
+
         private void BuildNowPlaying(Rect container)
         {
             Listing_Standard checkboxListing = new Listing_Standard();

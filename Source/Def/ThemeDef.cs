@@ -14,7 +14,6 @@ namespace MusicExpanded
         public List<TrackDef> tracks;
         public List<SoundDef> sounds = new List<SoundDef>();
         public string iconPath;
-        private static Dictionary<string, List<SubSoundDef>> vanillaSubSounds = new Dictionary<string, List<SubSoundDef>>();
         private static MethodInfo giveShortHash = AccessTools.Method(typeof(Verse.ShortHashGiver), "GiveShortHash");
         public static ThemeDef VanillaTheme => DefDatabase<ThemeDef>.GetNamedSilentFail("ME_Vanilla");
         public static void GenerateVanillaTheme()

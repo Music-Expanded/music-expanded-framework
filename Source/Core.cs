@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using UnityEngine;
 using Verse;
@@ -16,5 +17,11 @@ namespace MusicExpanded
         }
         public override string SettingsCategory() => "ME_MusicExpanded".Translate();
         public override void DoSettingsWindowContents(Rect inRect) => settings.Build(inRect);
+
+        internal static void Init()
+        {
+            TrackManager.Init();
+            SoundManager.Init();
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace MusicExpanded
         public Dictionary<string, bool> enabledThemes = new Dictionary<string, bool>();
         public bool showNowPlaying = true;
         public string selectedTheme = "ME_Vanilla";
+        public string selectedSoundTheme = "ME_Vanilla";
         public bool vanillaMusicUpdate = false;
         private static Vector2 scrollPosition = Vector2.zero;
         private static Rect settingsContainer;
@@ -22,6 +23,7 @@ namespace MusicExpanded
         {
             Scribe_Values.Look(ref showNowPlaying, "showNowPlaying", true);
             Scribe_Values.Look(ref vanillaMusicUpdate, "vanillaMusicUpdate", false);
+            Scribe_Values.Look(ref selectedSoundTheme, "selectedSoundTheme", "ME_Vanilla");
             Scribe_Collections.Look(ref enabledThemes, "enabledThemes", LookMode.Value, LookMode.Value);
         }
         public void Build(Rect container)
@@ -33,6 +35,8 @@ namespace MusicExpanded
             Rect checkboxRow = list.GetRect(30f);
             BuildNowPlaying(checkboxRow.LeftHalf());
             BuildVanillaMusicUpdate(checkboxRow.RightHalf());
+            Rect soundRow = list.GetRect(30f);
+            BuildSoundSelector(soundRow);
             BuildThemeSelector(list);
             list.End();
         }

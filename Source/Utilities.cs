@@ -18,7 +18,7 @@ namespace MusicExpanded
             if (!tracks.Any()) // if there are no tracks to play, return false
                 return false;
             // choose a random track weighted by commonality
-            tracks.TryRandomElementByWeight((TrackDef s) => s.commonality, out TrackDef track); \
+            tracks.TryRandomElementByWeight((TrackDef s) => s.commonality, out TrackDef track);
             // start playing the chosen track
             Find.MusicManagerPlay.ForceStartSong(track as SongDef, false); 
             return true;

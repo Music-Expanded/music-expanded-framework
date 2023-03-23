@@ -9,34 +9,49 @@ namespace MusicExpanded
 {
     public static class Utilities
     {
+        // Play a random track from the given cue
         public static bool PlayTrack(Cue cue, string cueData = null) => PlayTrack(TrackManager.TracksByCue(cue, cueData));
+
+        // Play a random track from the given list of tracks
         public static bool PlayTrack(IEnumerable<TrackDef> tracks)
         {
-            if (!tracks.Any())
+            if (!tracks.Any()) // if there are no tracks to play, return false
                 return false;
+            // choose a random track weighted by commonality
             tracks.TryRandomElementByWeight((TrackDef s) => s.commonality, out TrackDef track);
-            Find.MusicManagerPlay.ForceStartSong(track as SongDef, false);
+            // start playing the chosen track
+            Find.MusicManagerPlay.ForceStartSong(track as SongDef, false); 
             return true;
         }
+
+        // Show a message with the currently playing song
         public static void ShowNowPlaying(SongDef song)
         {
-            if (Core.settings.showNowPlaying)
-                Messages.Message("ME_NowPlaying".Translate(song.label).ToString(), null, MessageTypeDefOf.SilentInput, null, false);
+            // if the mod's settings allow showing the now playing message
+            if (Core.settings.showNowPlaying) 
+                Messages.Message("ME_NowPlaying".Translate(song.label).ToString(), null, MessageTypeDefOf.SilentInput, null, false); // show the message
         }
+
+        // Get the appropriate battle cue for the given battle points
         public static Cue BattleCue(float points)
         {
-            if (points > 5000)
-                return Cue.BattleLegendary;
-            if (points > 2500)
-                return Cue.BattleLarge;
-            if (points > 500)
-                return Cue.BattleMedium;
-            return Cue.BattleSmall;
+            if (points > 5000) // if there are over 5000 points
+                return Cue.BattleLegendary; // return the legendary battle cue
+            if (points > 2500) // if there are over 2500 points
+                return Cue.BattleLarge; // return the large battle cue
+            if (points > 500) // if there are over 500 points
+                return Cue.BattleMedium; // return the medium battle cue
+            return Cue.BattleSmall; // otherwise return the small battle cue
         }
+
+        // Check if the pawn's name contains the given substring
         public static bool NameMatches(Pawn pawn, string name)
         {
-            return pawn.Name.ToStringFull.ToLower().Contains(name.ToLower());
+            // check if the lowercase name contains the lowercase substring
+            return pawn.Name.ToStringFull.ToLower().Contains(name.ToLower()); 
         }
+
+        // Get the hashes already taken by the given type. This is particularly useful for ensuring the hashes don't collide when creating new defs dynamically.
         public static HashSet<ushort> GetHashes(Type type)
         {
             HashSet<ushort> hashset;

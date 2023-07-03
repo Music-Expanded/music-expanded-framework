@@ -57,15 +57,16 @@ namespace MusicExpanded
         {
             // Generate the vanilla theme.
             ThemeDef.GenerateVanillaTheme();
-
-            // Add tracks from all the enabled themes to the list of tracks.
-            foreach (ThemeDef theme in DefDatabase<ThemeDef>.AllDefsListForReading)
-            {
-                if (Core.settings.enabledThemes.TryGetValue(theme.defName, false))
+            try {
+                // Add tracks from all the enabled themes to the list of tracks.
+                foreach (ThemeDef theme in DefDatabase<ThemeDef>.AllDefsListForReading)
                 {
-                    Add(theme);
+                    if (Core.settings.enabledThemes.TryGetValue(theme.defName, false))
+                    {
+                        Add(theme);
+                    }
                 }
-            }
+            } catch {}
         }
     }
 }

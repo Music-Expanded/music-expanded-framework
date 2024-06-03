@@ -1,6 +1,9 @@
 # Ignore dotnet files
 obj
 
+# Ignore recently built files
+/1.4/Assemblies
+
 # Ignore editor files
 .vscode
 .vs

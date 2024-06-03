@@ -8,7 +8,7 @@ namespace MusicExpanded.Patches
     public class Scenario
     {
         // This Harmony patch runs after a scenario has finished loading.
-        [HarmonyPatch(typeof(RimWorld.Scenario), "PostGameStart")]
+        [HarmonyPatch(typeof(RimWorld.Scenario), nameof(RimWorld.Scenario.PostGameStart))]
         class PostGameStart
         {
             static void Postfix(RimWorld.Scenario __instance)

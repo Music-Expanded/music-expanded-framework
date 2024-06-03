@@ -69,7 +69,7 @@ namespace MusicExpanded
             {
                 MusicManagerPlay manager = Find.MusicManagerPlay; // get the current music manager (used in gameplay)
                 if (manager != null && manager.IsPlaying)
-                    manager.ForceStartSong(tracks.RandomElement() as SongDef, false); // start playing a random track from the theme's tracks list
+                    manager.ForcePlaySong(tracks.RandomElement() as SongDef, false); // start playing a random track from the theme's tracks list
             }
             catch
             {

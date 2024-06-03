@@ -20,7 +20,7 @@ namespace MusicExpanded
             // choose a random track weighted by commonality
             tracks.TryRandomElementByWeight((TrackDef s) => s.commonality, out TrackDef track);
             // start playing the chosen track
-            Find.MusicManagerPlay.ForceStartSong(track as SongDef, false); 
+            Find.MusicManagerPlay.ForcePlaySong(track as SongDef, false); 
             return true;
         }
 

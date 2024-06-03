@@ -8,3 +8,4 @@ obj
 .vscode
 .vs
 *.sln
+*.DotSettings.user

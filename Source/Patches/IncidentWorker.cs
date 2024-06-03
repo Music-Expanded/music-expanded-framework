@@ -4,7 +4,7 @@ using RimWorld;
 namespace MusicExpanded.Patches
 {
     // Harmony patch to intercept the TryExecute method in RimWorld.IncidentWorker class
-    [HarmonyPatch(typeof(RimWorld.IncidentWorker), "TryExecute")]
+    [HarmonyPatch(typeof(RimWorld.IncidentWorker), nameof(RimWorld.IncidentWorker.TryExecute))]
     public class IncidentWorker
     {
         // Postfix method to be executed after TryExecute

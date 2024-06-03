@@ -13,8 +13,7 @@ namespace MusicExpanded.Patches
         // Declare some static fields with reflection info
         public static MethodInfo startNewSong = AccessTools.Method(typeof(RimWorld.MusicManagerPlay), "StartNewSong");
         public static FieldInfo gameObjectCreated = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "gameObjectCreated");
-        public static FieldInfo forcedSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "forcedNextSong");
-        public static FieldInfo lastStartedSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "lastStartedSong");
+        public static FieldInfo currentSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "currentSong");
         public static FieldInfo ignorePrefsVolumeThisSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "ignorePrefsVolumeThisSong");
         public static FieldInfo audioSource = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "audioSource");
 
@@ -32,16 +31,16 @@ namespace MusicExpanded.Patches
                     Log.Error("Using Music Expanded Framework while RimWorld's setting \"RunInBackground\" is disabled is known to cause issues! Enabling \"vanillaMusicUpdate\" setting in Music Expanded Framework settings to ensure proper compatibility. If you'd like to use our custom update, enable RimWorld's \"Run In Background\" setting, and disable Music Expanded Frameworks's \"Vanilla Music Update\"");
                     Core.settings.vanillaMusicUpdate = true;
                 }
-                // Get the forced song
-                System.Object forcedSong = MusicManagerPlay.forcedSong.GetValue(__instance);
-                // If there is a forced song, show it and return
-                if (forcedSong != null)
-                {
-                    Utilities.ShowNowPlaying(forcedSong as SongDef);
-                    return true;
-                }
+                //// Get the forced song
+                //System.Object forcedSong = MusicManagerPlay.songWasForced.GetValue(__instance);
+                //// If there is a forced song, show it and return
+                //if (forcedSong != null)
+                //{
+                //    Utilities.ShowNowPlaying(forcedSong as SongDef);
+                //    return true;
+                //}
                 // Get the last started song
-                SongDef lastTrack = MusicManagerPlay.lastStartedSong.GetValue(__instance) as SongDef;
+                SongDef lastTrack = MusicManagerPlay.currentSong.GetValue(__instance) as SongDef;
                 IEnumerable<TrackDef> tracks = null;
 
                 // Battle track decay
@@ -106,7 +105,7 @@ namespace MusicExpanded.Patches
         }
 
         // This patch handles the music update process
-        [HarmonyPatch(typeof(RimWorld.MusicManagerPlay), "MusicUpdate")]
+        [HarmonyPatch(typeof(RimWorld.MusicManagerPlay), nameof(RimWorld.MusicManagerPlay.MusicUpdate))]
         class MusicUpdate
         {
             static bool Prefix(RimWorld.MusicManagerPlay __instance)
@@ -145,7 +144,7 @@ namespace MusicExpanded.Patches
         }
         // Solves this issue: https://github.com/Music-Expanded/music-expanded-framework/issues/56
         // Essentially, if a track is forced to play before the game has begun, don't try to play it immediately, but store it.
-        [HarmonyPatch(typeof(RimWorld.MusicManagerPlay), "ForceStartSong")]
+        [HarmonyPatch(typeof(RimWorld.MusicManagerPlay), nameof(RimWorld.MusicManagerPlay.ForcePlaySong))]
         class ForceStartSong
         {
             static bool Prefix(RimWorld.MusicManagerPlay __instance, SongDef song)
@@ -153,11 +152,11 @@ namespace MusicExpanded.Patches
                 // Get the value of the gameObjectCreated field
                 bool gameObjectCreated = (bool)MusicManagerPlay.gameObjectCreated.GetValue(__instance);
 
-                // Set the forcedSong field to the specified song
-                MusicManagerPlay.forcedSong.SetValue(__instance, song);
+                // Set the songWasForced field to the specified song
+                MusicManagerPlay.currentSong.SetValue(__instance, song);
 
                 // If gameObjectCreated is false, return true to allow
-                return !(!gameObjectCreated);
+                return gameObjectCreated;
             }
         }
     }

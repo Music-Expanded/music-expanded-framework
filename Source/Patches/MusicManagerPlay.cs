@@ -16,6 +16,8 @@ namespace MusicExpanded.Patches
         public static FieldInfo currentSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "currentSong");
         public static FieldInfo ignorePrefsVolumeThisSong = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "ignorePrefsVolumeThisSong");
         public static FieldInfo audioSource = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "audioSource");
+        public static FieldInfo songEndTime = AccessTools.Field(typeof(RimWorld.MusicManagerPlay), "songEndTime");
+        public static PropertyInfo isPlaying = AccessTools.Property(typeof(RimWorld.MusicManagerPlay), "IsPlaying");
 
         // Patch RimWorld.MusicManagerPlay.ChooseNextSong with Harmony
         [HarmonyPatch(typeof(RimWorld.MusicManagerPlay), "ChooseNextSong")]
@@ -116,7 +118,12 @@ namespace MusicExpanded.Patches
                 // If vanillaMusicUpdate is enabled, gameObjectCreated is false, or the MusicManagerPlay is disabled, return true to allow the original method to execute
                 if (Core.settings.vanillaMusicUpdate || !gameObjectCreated || __instance.disabled)
                     return true;
-
+                
+                if (Time.time > (float)songEndTime.GetValue(__instance))
+                {
+                    isPlaying.SetValue(__instance, false);
+                }
+                
                 try
                 {
                     // If no song is currently playing, set ignorePrefsVolumeThisSong to false and start a new song
